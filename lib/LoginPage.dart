@@ -1,6 +1,8 @@
+import 'package:coupon_app/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'user_provider.dart';
+import 'package:coupon_app/user_provider.dart';
+import 'RegisterPage.dart'; 
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,31 +15,29 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill in all fields')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter both email and password.'),
+      ));
       return;
     }
 
-    final success = await userProvider.login(email, password);
+    bool success = await userProvider.login(email, password);
     if (success) {
-      debugPrint('Login successful. User ID: ${userProvider.userId}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login successful')),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Login successful!'),
+      ));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()), 
       );
-
-      // Navigate to another page, e.g., HomePage
-      Navigator.pushReplacementNamed(context, '/main');
     } else {
-      debugPrint('Login failed.');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed. Please check your credentials')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Login failed. Please check your credentials.'),
+      ));
     }
   }
 
@@ -53,16 +53,27 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
             ),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _login, // เรียกใช้ฟังก์ชัน _login
+              onPressed: _login,
               child: Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                );
+              },
+              child: Text('Don\'t have an account? Register here'),
             ),
           ],
         ),

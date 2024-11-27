@@ -7,23 +7,35 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('QR Management')),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => QRCodeScanner()));
-            },
-            child: Text('Scan QR Code'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ScanHistoryPage()));
-            },
-            child: Text('View Scan History'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(200, 60), 
+                textStyle: TextStyle(fontSize: 18), 
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => QRCodeScanner()));
+              },
+              child: Text('Scan QR Code'),
+            ),
+            SizedBox(height: 60), 
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(200, 60), 
+                textStyle: TextStyle(fontSize: 18), 
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ScanHistoryPage()));
+              },
+              child: Text('View Scan History'),
+            ),
+          ],
+        ),
       ),
     );
   }
